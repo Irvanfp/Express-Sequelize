@@ -1,0 +1,60 @@
+{
+  "name": "travelook",
+  "version": "1.0.0",
+  "description": "travelook API",
+  "main": "index.js",
+  "scripts": {
+    "test": "NODE_ENV=test jest --testTimeout=100000 --coverage --forceExit",
+    "dev": "NODE_ENV=development nodemon index.js",
+    "stop": "NODE_ENV=production forever stop index.js || true",
+    "start": "NODE_ENV=production forever start index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@gitlab.com:binarxglints_batch11/finalproject/team-b/Backend.git"
+  },
+  "author": "Travelook Backend Team",
+  "license": "MIT",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "express-fileupload": "^1.2.1",
+    "express-rate-limit": "^5.2.6",
+    "express-session": "^1.17.1",
+    "express-validator": "^6.10.1",
+    "helmet": "^4.6.0",
+    "hpp": "^0.2.3",
+    "jest": "^26.6.3",
+    "jsonwebtoken": "^8.5.1",
+    "midtrans-client": "^1.2.3",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.2",
+    "mysql2": "^2.2.5",
+    "nodemailer": "^6.6.0",
+    "passport": "^0.4.1",
+    "passport-google-oauth20": "^2.0.0",
+    "passport-jwt": "^4.0.0",
+    "passport-local": "^1.0.0",
+    "passport-oauth2": "^1.5.0",
+    "sequelize": "^6.6.2",
+    "sequelize-cli": "^6.2.0",
+    "supertest": "^6.1.3",
+    "validator": "^13.6.0",
+    "xss-clean": "^0.1.1"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "jest": "^26.6.3",
+    "supertest": "^6.1.3"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ]
+  }
+}

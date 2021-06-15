@@ -1,0 +1,23 @@
+{
+    "development": {
+        "username": "admin",
+        "password": "travel00k!!",
+        "database": "travelook_development",
+        "host": "travelook2.ctivhve4okks.ap-southeast-1.rds.amazonaws.com",
+        "dialect": "mysql"
+    },
+    "test": {
+        "username": "admin",
+        "password": "travel00k!!",
+        "database": "travelook_test",
+        "host": "travelook2.ctivhve4okks.ap-southeast-1.rds.amazonaws.com",
+        "dialect": "mysql"
+    },
+    "production": {
+        "username": "admin",
+        "password": "travel00k!!",
+        "database": "travelook_production",
+        "host": "travelook2.ctivhve4okks.ap-southeast-1.rds.amazonaws.com",
+        "dialect": "mysql"
+    }
+}

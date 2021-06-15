@@ -1,0 +1,71 @@
+# We have 2 stage Test and Deploy
+stages:
+  - test
+  - deploy
+
+# Config cache
+cache:
+  paths:
+    - node_modules/
+
+# Test job
+test:
+  # Docker image
+  image: node:latest
+  # Attach Test job to Test stage
+  stage: test
+  # Config to use GitLab Shared Runner with Executor Docker
+  tags:
+    - travelook-batch11
+  script:
+    - echo "MYSQL_USERNAME"=$MYSQL_USERNAME > .env.test
+    - echo "MYSQL_PASSWORD"=$MYSQL_PASSWORD >> .env.test
+    - echo "MYSQL_DATABASE"=$MYSQL_DATABASE_TEST >> .env.test
+    - echo "MYSQL_HOST"=$MYSQL_HOST >> .env.test
+    - echo "JWT_SECRET"=$JWT_SECRET >> .env.test
+    - echo "GMAIL_EMAIL"=$GMAIL_EMAIL >> .env.test
+    - echo "GMAIL_PASSWORD"=$GMAIL_PASSWORD >> .env.test
+    - echo "SERVER_KEY"= $SERVER_KEY >> .env.test
+    - rm -rf node_modules package-lock.json && npm install
+    - npm install sequelize-cli
+    - NODE_ENV=test npx sequelize db:drop #create database test
+    - NODE_ENV=test npx sequelize db:create #create database test
+    - NODE_ENV=test npx sequelize db:migrate #create migration
+    - NODE_ENV=test npx sequelize db:seed:all #create migration
+    - npm run test
+    # - NODE_ENV=test npx sequelize db:drop #drop database after test
+
+  # Defines the names of branches and tags the job runs for
+  only:
+    - master
+
+# Deploy job
+deploy:
+  type: deploy
+  # Attach Deploy job to Deploy stage
+  stage: deploy
+  # Config to use our Runner with Executor Shell
+  tags:
+    - travelook-batch11
+  script:
+    # Only copy changed files to project folder
+    - cp -r -u * $PROJECT_DIR
+    - cd $PROJECT_DIR
+    - echo "MYSQL_USERNAME"=$MYSQL_USERNAME > .env.production
+    - echo "MYSQL_PASSWORD"=$MYSQL_PASSWORD >> .env.production
+    - echo "MYSQL_DATABASE"=$MYSQL_DATABASE_PRODUCTION >> .env.production
+    - echo "MYSQL_HOST"=$MYSQL_HOST >> .env.production
+    - echo "JWT_SECRET"=$JWT_SECRET >> .env.production
+    - echo "GMAIL_EMAIL"=$GMAIL_EMAIL >> .env.production
+    - echo "GMAIL_PASSWORD"=$GMAIL_PASSWORD >> .env.production
+    - echo "NODEMAILER_EMAIL"=$NODEMAILER_EMAIL >> .env.production
+    - echo "NODEMAILER_PASSWORD"=$NODEMAILER_PASSWORD >> .env.production
+    - echo "SERVER_KEY"= $SERVER_KEY >> .env.production
+    - npm install
+    - NODE_ENV=production npx sequelize db:create #create database test
+    - NODE_ENV=production npx sequelize db:migrate #create migration
+    # Restart NodeJS service
+    - npm run stop
+    - npm run start
+  only:
+    - master
